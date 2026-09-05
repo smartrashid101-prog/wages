@@ -28,18 +28,17 @@ jobs:
 
       - name: Set minimum iOS deployment target to 15.0
         run: |
-          # Flutter 3.47+ requires iOS 15.0+. This patches both the
-          # Podfile and the Xcode project so CocoaPods and the actual
-          # build agree. Runs every build since there's no local Mac
-          # here to open Xcode and change "Minimum Deployments" by hand.
-          # macOS ships BSD sed, which needs -i '' (empty string arg).
-          if grep -q "platform :ios" ios/Podfile; then
-            sed -i '' -E "s/#?[[:space:]]*platform :ios, '[0-9.]+'/platform :ios, '15.0'/" ios/Podfile
-          else
-            printf "platform :ios, '15.0'\n%s\n" "$(cat ios/Podfile)" > ios/Podfile.tmp
-            mv ios/Podfile.tmp ios/Podfile
-          fi
-          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g' ios/Runner.xcodeproj/project.pbxproj
+          # Flutter 3.47+ requires iOS 15.0+. The Podfile's platform line
+          # is safe to edit with sed (plain text, one line, already
+          # confirmed working). project.pbxproj is NOT edited with sed
+          # anymore - it's a structured plist-like format and a blind
+          # text substitution there corrupted it last run, causing
+          # "Could not automatically select an Xcode workspace". Using
+          # the `xcodeproj` Ruby gem instead parses and writes the file
+          # properly.
+          sed -i '' -E "s/#?[[:space:]]*platform :ios, '[0-9.]+'/platform :ios, '15.0'/" ios/Podfile
+          gem list -i xcodeproj || sudo gem install xcodeproj --no-document
+          ruby -e "require 'xcodeproj'; p = Xcodeproj::Project.open('ios/Runner.xcodeproj'); p.targets.each { |t| t.build_configurations.each { |c| c.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0' } }; p.build_configurations.each { |c| c.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0' }; p.save"
           echo "--- Podfile platform line ---"
           grep "platform :ios" ios/Podfile
           echo "--- pbxproj deployment targets ---"
