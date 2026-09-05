@@ -16,12 +16,14 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.1'  # Recent stable — ships a modern
-                                      # Dart SDK so you don't need to
-                                      # downgrade file_picker /
-                                      # connectivity_plus / device_info_plus /
-                                      # package_info_plus / permission_handler
-                                      # to dodge SDK-version conflicts.
+          flutter-version: '3.47.1'  # Latest stable — includes the
+                                      # UIScene/FlutterImplicitEngineDelegate
+                                      # migration (introduced in 3.38) that
+                                      # your ios/Runner/AppDelegate.swift
+                                      # already uses. An older pin here is
+                                      # exactly what caused "Cannot find
+                                      # type 'FlutterImplicitEngineDelegate'
+                                      # in scope".
           channel: 'stable'
           cache: true
 
@@ -30,6 +32,14 @@ jobs:
         # If this ever prints a different version than the one set
         # above, the cache or the action itself is stale — clear the
         # GitHub Actions cache for this repo and re-run.
+
+      - name: Verify Xcode version
+        run: xcodebuild -version
+        # Flutter 3.38+'s UIScene support targets Xcode 26. macos-latest
+        # runners are usually updated with the newest Xcode fairly
+        # quickly, but if this prints an older Xcode and the build still
+        # fails, add a step here to select a specific installed Xcode:
+        #   sudo xcode-select -s /Applications/Xcode_26.app/Contents/Developer
 
       - name: Install dependencies
         run: |
