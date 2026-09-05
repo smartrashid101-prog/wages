@@ -37,6 +37,20 @@ jobs:
       - name: Verify Xcode version
         run: xcodebuild -version
 
+      - name: Ensure iOS platform files exist
+        run: |
+          # Confirmed via debug output: ios/ exists but ios/Podfile does
+          # not - it was never committed, so the iOS platform setup is
+          # incomplete. `flutter create --platforms=ios .` safely fills
+          # in only the missing standard Flutter-managed files (Podfile,
+          # Runner.xcodeproj, etc.) without touching lib/ or pubspec.yaml.
+          if [ ! -f ios/Podfile ]; then
+            echo "ios/Podfile is missing - regenerating iOS platform files"
+            flutter create --platforms=ios .
+          fi
+          ls -la ios/
+          test -f ios/Podfile && echo "ios/Podfile now present" || (echo "ios/Podfile still missing - aborting" && exit 1)
+
       - name: Set minimum iOS deployment target to 15.0
         run: |
           # Flutter 3.47+ requires iOS 15.0+. The Podfile's platform line
