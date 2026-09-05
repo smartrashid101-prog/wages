@@ -16,9 +16,20 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'  # ✅ Newer Flutter version
+          flutter-version: '3.35.1'  # Recent stable — ships a modern
+                                      # Dart SDK so you don't need to
+                                      # downgrade file_picker /
+                                      # connectivity_plus / device_info_plus /
+                                      # package_info_plus / permission_handler
+                                      # to dodge SDK-version conflicts.
           channel: 'stable'
           cache: true
+
+      - name: Verify Flutter/Dart version actually in use
+        run: flutter --version
+        # If this ever prints a different version than the one set
+        # above, the cache or the action itself is stale — clear the
+        # GitHub Actions cache for this repo and re-run.
 
       - name: Install dependencies
         run: |
