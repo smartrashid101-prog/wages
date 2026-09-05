@@ -8,7 +8,7 @@ on:
 jobs:
   build-ios:
     runs-on: macos-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -16,45 +16,28 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.47.1'  # Latest stable — includes the
-                                      # UIScene/FlutterImplicitEngineDelegate
-                                      # migration (introduced in 3.38) that
-                                      # your ios/Runner/AppDelegate.swift
-                                      # already uses. An older pin here is
-                                      # exactly what caused "Cannot find
-                                      # type 'FlutterImplicitEngineDelegate'
-                                      # in scope".
+          flutter-version: '3.47.1'
           channel: 'stable'
           cache: true
 
       - name: Verify Flutter/Dart version actually in use
         run: flutter --version
-        # If this ever prints a different version than the one set
-        # above, the cache or the action itself is stale — clear the
-        # GitHub Actions cache for this repo and re-run.
 
       - name: Verify Xcode version
         run: xcodebuild -version
-        # Flutter 3.38+'s UIScene support targets Xcode 26. macos-latest
-        # runners are usually updated with the newest Xcode fairly
-        # quickly, but if this prints an older Xcode and the build still
-        # fails, add a step here to select a specific installed Xcode:
-        #   sudo xcode-select -s /Applications/Xcode_26.app/Contents/Developer
 
       - name: Set minimum iOS deployment target to 15.0
         run: |
           # Flutter 3.47+ requires iOS 15.0+. This patches both the
           # Podfile and the Xcode project so CocoaPods and the actual
-          # build agree — needed every run since there's no local Mac
-          # to open Xcode and change "Minimum Deployments" by hand.
+          # build agree. Runs every build since there's no local Mac
+          # here to open Xcode and change "Minimum Deployments" by hand.
           # macOS ships BSD sed, which needs -i '' (empty string arg).
           if grep -q "platform :ios" ios/Podfile; then
-            sed -i '' "s/# *platform :ios, '[0-9.]*'/platform :ios, '15.0'/" ios/Podfile
-            sed -i '' "s/platform :ios, '[0-9.]*'/platform :ios, '15.0'/" ios/Podfile
+            sed -i '' -E "s/#?[[:space:]]*platform :ios, '[0-9.]+'/platform :ios, '15.0'/" ios/Podfile
           else
-            sed -i '' "1i\\
-platform :ios, '15.0'
-" ios/Podfile
+            printf "platform :ios, '15.0'\n%s\n" "$(cat ios/Podfile)" > ios/Podfile.tmp
+            mv ios/Podfile.tmp ios/Podfile
           fi
           sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g' ios/Runner.xcodeproj/project.pbxproj
           echo "--- Podfile platform line ---"
