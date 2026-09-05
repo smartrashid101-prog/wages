@@ -54,7 +54,7 @@ dependencies:
   device_info_plus: ^10.1.2
   
   # Package Info
-  package_info_plus: ^8.3.1
+  package_info_plus: ^4.0.0 
   
   # Loading indicators
   flutter_spinkit: ^5.2.0
