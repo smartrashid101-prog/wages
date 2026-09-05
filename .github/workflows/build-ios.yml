@@ -41,6 +41,27 @@ jobs:
         # fails, add a step here to select a specific installed Xcode:
         #   sudo xcode-select -s /Applications/Xcode_26.app/Contents/Developer
 
+      - name: Set minimum iOS deployment target to 15.0
+        run: |
+          # Flutter 3.47+ requires iOS 15.0+. This patches both the
+          # Podfile and the Xcode project so CocoaPods and the actual
+          # build agree — needed every run since there's no local Mac
+          # to open Xcode and change "Minimum Deployments" by hand.
+          # macOS ships BSD sed, which needs -i '' (empty string arg).
+          if grep -q "platform :ios" ios/Podfile; then
+            sed -i '' "s/# *platform :ios, '[0-9.]*'/platform :ios, '15.0'/" ios/Podfile
+            sed -i '' "s/platform :ios, '[0-9.]*'/platform :ios, '15.0'/" ios/Podfile
+          else
+            sed -i '' "1i\\
+platform :ios, '15.0'
+" ios/Podfile
+          fi
+          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g' ios/Runner.xcodeproj/project.pbxproj
+          echo "--- Podfile platform line ---"
+          grep "platform :ios" ios/Podfile
+          echo "--- pbxproj deployment targets ---"
+          grep "IPHONEOS_DEPLOYMENT_TARGET" ios/Runner.xcodeproj/project.pbxproj
+
       - name: Install dependencies
         run: |
           flutter pub get
