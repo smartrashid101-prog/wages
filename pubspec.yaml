@@ -9,8 +9,8 @@ dependencies:
   flutter:
     sdk: flutter
   
-  # Supabase
-  supabase_flutter: ^2.16.0
+  # Supabase - Downgraded for compatibility
+  supabase_flutter: ^2.0.0  # ✅ FIXED (was 2.16.0)
 
   http: ^1.1.0
   mailer: ^6.0.0
@@ -22,7 +22,7 @@ dependencies:
   # Local Database
   sqflite: ^2.3.0
   path_provider: ^2.1.0
-  path: ^1.8.3  # ✅ Already fixed
+  path: ^1.8.3
   
   # PDF Generation
   pdf: ^3.10.4
@@ -35,7 +35,7 @@ dependencies:
   intl: ^0.19.0
   
   # Connectivity
-  connectivity_plus: ^5.0.0  # ✅ FIXED (was 6.1.5)
+  connectivity_plus: ^5.0.0
   
   # Charts
   fl_chart: ^0.65.0
@@ -47,13 +47,13 @@ dependencies:
   file_picker: ^8.3.7
   
   # Permission Handling
-  permission_handler: ^11.3.0  # ✅ FIXED (was 12.0.3)
+  permission_handler: ^11.3.0
   
   # Device Info
-  device_info_plus: ^9.0.0  # ✅ FIXED (was 10.1.2)
+  device_info_plus: ^9.0.0
   
   # Package Info
-  package_info_plus: ^4.0.0  # ✅ Already fixed
+  package_info_plus: ^4.0.0
   
   # Loading indicators
   flutter_spinkit: ^5.2.0
@@ -67,10 +67,10 @@ dev_dependencies:
   mockito: ^5.4.0
   build_runner: ^2.4.6
   
-  # ✅ App Icon Generator
+  # App Icon Generator
   flutter_launcher_icons: ^0.13.1
   
-  # ✅ Splash Screen Generator
+  # Splash Screen Generator
   flutter_native_splash: ^2.3.8
 
 flutter:
@@ -78,14 +78,13 @@ flutter:
   assets:
     - assets/images/
 
-# ✅ Configuration for App Icon
+# Configuration for App Icon
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   image_path: "assets/images/app_icon.png"
   min_sdk_android: 21
   
-  # Adaptive Icon Setup - White Background
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/images/app_icon_foreground.png"
   
@@ -99,7 +98,7 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/images/app_icon.png"
 
-# ✅ Configuration for Splash Screen
+# Configuration for Splash Screen
 flutter_native_splash:
   color: "#081b4b"
   image: assets/images/splash_icon.png
