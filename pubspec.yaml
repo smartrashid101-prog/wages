@@ -12,22 +12,21 @@ dependencies:
   # Supabase
   supabase_flutter: ^2.16.0
 
-  http: ^1.1.0  # Add this
-  smtp_service: ^0.0.2  # Add this
-  mailer: ^6.0.0  # Well-maintained SMTP package
+  http: ^1.2.2
+  mailer: ^6.1.2  # Keep this - it's the better SMTP package
   
   # State Management
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
   
   # Local Database
-  sqflite: ^2.3.0
-  path_provider: ^2.1.0
+  sqflite: ^2.3.3
+  path_provider: ^2.1.4
   path: ^1.9.0
   
   # PDF Generation
-  pdf: ^3.10.4
-  printing: ^5.11.1
+  pdf: ^3.11.1
+  printing: ^5.13.1
   
   # Sharing
   share_plus: ^10.1.4
@@ -39,10 +38,10 @@ dependencies:
   connectivity_plus: ^6.1.5
   
   # Charts
-  fl_chart: ^0.65.0
+  fl_chart: ^0.69.2
   
   # UUID Generation
-  uuid: ^4.3.3
+  uuid: ^4.5.1
   
   # File Picker
   file_picker: ^8.3.7
@@ -57,21 +56,21 @@ dependencies:
   package_info_plus: ^8.3.1
   
   # Loading indicators
-  flutter_spinkit: ^5.2.0
+  flutter_spinkit: ^5.2.1
 
-  shared_preferences: ^2.2.2   # ✅ Add this
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.2
-  mockito: ^5.7.0
+  mockito: ^5.4.0
   build_runner: ^2.4.6
   
-  # ✅ App Icon Generator
+  # App Icon Generator
   flutter_launcher_icons: ^0.13.1
   
-  # ✅ Splash Screen Generator
+  # Splash Screen Generator
   flutter_native_splash: ^2.3.8
 
 flutter:
@@ -79,14 +78,13 @@ flutter:
   assets:
     - assets/images/
 
-# ✅ Configuration for App Icon
+# Configuration for App Icon
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   image_path: "assets/images/app_icon.png"
   min_sdk_android: 21
   
-  # Adaptive Icon Setup - White Background
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/images/app_icon_foreground.png"
   
@@ -100,7 +98,7 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/images/app_icon.png"
 
-# ✅ Configuration for Splash Screen
+# Configuration for Splash Screen
 flutter_native_splash:
   color: "#081b4b"
   image: assets/images/splash_icon.png
