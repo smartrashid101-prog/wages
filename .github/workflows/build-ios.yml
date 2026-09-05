@@ -13,6 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug — list repo structure
+        run: |
+          echo "--- Repo root ---"
+          ls -la
+          echo "--- Looking for ios folder anywhere in repo ---"
+          find . -maxdepth 3 -type d -iname "ios"
+          echo "--- Looking for Podfile anywhere in repo ---"
+          find . -maxdepth 4 -iname "Podfile"
+          echo "--- .gitignore content (if any) ---"
+          cat .gitignore 2>/dev/null || echo "(no .gitignore at root)"
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
