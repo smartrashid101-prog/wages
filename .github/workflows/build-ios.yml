@@ -74,9 +74,31 @@ jobs:
           flutter pub get
           cd ios && pod install --repo-update && cd ..
 
-      - name: Build iOS IPA
+      - name: Build iOS app (unsigned)
         run: |
           flutter build ios --release --no-codesign
+
+      - name: Package unsigned .app into an .ipa
+        run: |
+          # `flutter build ios --no-codesign` only produces an unsigned
+          # Runner.app under build/ios/iphoneos - it does NOT create an
+          # .ipa. That's what `flutter build ipa` does, which requires
+          # real code signing / a provisioning profile - neither of
+          # which is set up in this workflow. An .ipa is just a zip
+          # file containing a top-level "Payload" folder with the .app
+          # inside, so it's built manually here.
+          #
+          # IMPORTANT: this .ipa is UNSIGNED. It cannot be installed on
+          # a real iPhone/iPad or uploaded to TestFlight/App Store as
+          # is - it only lets you download and inspect the build
+          # output. Shipping to a real device needs an Apple Developer
+          # certificate + provisioning profile and proper signing.
+          mkdir -p build/ios/ipa/Payload
+          cp -r build/ios/iphoneos/Runner.app build/ios/ipa/Payload/
+          cd build/ios/ipa
+          zip -r wages-unsigned.ipa Payload
+          rm -rf Payload
+          cd -
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
