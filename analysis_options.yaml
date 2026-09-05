@@ -1,0 +1,7 @@
+analyzer:
+  errors:
+    avoid_web_libraries_in_flutter: ignore
+
+linter:
+  rules:
+    avoid_web_libraries_in_flutter: false
