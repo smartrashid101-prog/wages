@@ -3,30 +3,30 @@ description: Production-ready Hours & Wages Calculator with offline support
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   
-  # Supabase - Downgraded for compatibility
-  supabase_flutter: ^2.0.0  # ✅ FIXED (was 2.16.0)
+  # Supabase
+  supabase_flutter: ^2.16.0
 
-  http: ^1.1.0
-  mailer: ^6.0.0
+  http: ^1.2.2
+  mailer: ^6.1.2
   
   # State Management
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
   
   # Local Database
-  sqflite: ^2.3.0
-  path_provider: ^2.1.0
-  path: ^1.8.3
+  sqflite: ^2.3.3
+  path_provider: ^2.1.4
+  path: ^1.9.0
   
   # PDF Generation
-  pdf: ^3.10.4
-  printing: ^5.11.1
+  pdf: ^3.11.1
+  printing: ^5.13.1
   
   # Sharing
   share_plus: ^10.1.4
@@ -35,30 +35,30 @@ dependencies:
   intl: ^0.19.0
   
   # Connectivity
-  connectivity_plus: ^5.0.0
+  connectivity_plus: ^6.1.5
   
   # Charts
-  fl_chart: ^0.65.0
+  fl_chart: ^0.69.2
   
   # UUID Generation
-  uuid: ^4.3.3
+  uuid: ^4.5.1
   
   # File Picker
   file_picker: ^8.3.7
   
   # Permission Handling
-  permission_handler: ^11.3.0
+  permission_handler: ^11.3.1
   
   # Device Info
-  device_info_plus: ^9.0.0
+  device_info_plus: ^10.1.2
   
   # Package Info
-  package_info_plus: ^4.0.0
+  package_info_plus: ^8.1.1
   
   # Loading indicators
-  flutter_spinkit: ^5.2.0
+  flutter_spinkit: ^5.2.1
 
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
